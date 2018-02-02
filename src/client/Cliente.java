@@ -121,7 +121,7 @@ public class Cliente implements Runnable {
 
 		System.out.println("Iniciando conexão com servidor...");
 
-		Cliente cliente = new Cliente("192.168.25.36", 8500);// 52.67.10.115
+		Cliente cliente = new Cliente("192.168.25.38", 8500);// 52.67.10.115
 		//Cliente cliente = new Cliente("172.16.29.29", 8500);// 52.67.10.115
 		//Cliente cliente = new Cliente("ec2-52-67-10-115.sa-east-1.compute.amazonaws.com", 8500);
 
@@ -135,73 +135,73 @@ public class Cliente implements Runnable {
 			System.out.println("Digite sua mensagem: ");
 			//String mensagem = scanner.nextLine();
 			String mensagem = "";
-			
+
 			TesteMetricas metricas = new TesteMetricas();
-			
+
 			System.out.println("Insira o movimento: norte, sul, leste,oeste");
 			String movimento = scanner.nextLine();
 			switch (movimento) {
 				case "norte":
-					metricas.addMovimento(new int []{-1,0});
+					metricas.addMovimento(new int[] { -1, 0 });
 					break;
 
 				case "sul":
-					metricas.addMovimento(new int []{1,0});
+					metricas.addMovimento(new int[] { 1, 0 });
 					break;
 				case "leste":
-					metricas.addMovimento(new int []{0,1});
+					metricas.addMovimento(new int[] { 0, 1 });
 					break;
 
 				case "oeste":
-					metricas.addMovimento(new int []{0,-1});
+					metricas.addMovimento(new int[] { 0, -1 });
 					break;
-					
-				default : //parado
-					metricas.addMovimento(new int []{0,0});
+
+				default: //parado
+					metricas.addMovimento(new int[] { 0, 0 });
 					break;
 			}
-			
+
 			System.out.println("Insira as características: 1-True 0-False");
-			
+
 			System.out.println("Norte");
 			String celula = scanner.nextLine();
-//			String celula = "1";
+			//			String celula = "1";
 			if (celula.equals("1")) {
-				metricas.setNorte(true);				
-			}else if(celula.equals("0") || celula.equals("")){
+				metricas.setNorte(true);
+			} else if (celula.equals("0") || celula.equals("")) {
 				metricas.setNorte(false);
 			}
-			
+
 			System.out.println("Sul");
 			celula = scanner.nextLine();
-//			celula = "0";
+			//			celula = "0";
 			if (celula.equals("1")) {
-				metricas.setSul(true);				
-			}else{
+				metricas.setSul(true);
+			} else {
 				metricas.setSul(false);
 			}
-			
+
 			System.out.println("Leste");
 			celula = scanner.nextLine();
-//			celula = "1";
+			//			celula = "1";
 			if (celula.equals("1")) {
-				metricas.setLeste(true);				
-			}else{
+				metricas.setLeste(true);
+			} else {
 				metricas.setLeste(false);
 			}
-			
+
 			System.out.println("Oeste");
 			celula = scanner.nextLine();
-//			celula = "1";
+			//			celula = "1";
 			if (celula.equals("1")) {
-				metricas.setOeste(true);				
-			}else{
+				metricas.setOeste(true);
+			} else {
 				metricas.setOeste(false);
 			}
-			
+
 			Gson gson = new Gson();
 			mensagem = gson.toJson(metricas);
-			
+
 			if (!cliente.isExecutando())
 				break;
 

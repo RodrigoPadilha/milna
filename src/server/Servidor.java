@@ -93,10 +93,14 @@ public class Servidor implements Runnable {
 
 				System.out.println("Conexão estabelecida");
 
-				Atendente atendente = new Atendente(socket,ia);
-				atendente.start();
-
-				atendentes.add(atendente);
+				/**
+				 * Obriga a conectar primeiramente o Celular e
+				 * em seguida conectar o Robo
+				 */
+				//Atendente dispositivoGeneric = Atendente.getInstance(socket);
+				Atendente dispositivoGeneric = Atendente.getInstance(socket, ia);
+				dispositivoGeneric.start();
+				atendentes.add(dispositivoGeneric);
 
 			} catch (SocketTimeoutException e) {
 				//ingnorar???
