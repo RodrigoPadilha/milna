@@ -9,112 +9,97 @@ import ia.Intelecto;
 
 public abstract class Atendente implements Runnable, Dispositivo {
 
-	protected boolean inicializado;
-	protected boolean executando;
-	protected Socket socket;
-	protected Intelecto ia;
-	protected Thread thread;
-	protected BufferedReader in;
-	protected PrintStream out;
-	private static Atendente uniqueInstanceAtendente;
+    private static Atendente UNIQUE_INSTANCE;
+    protected boolean inicializado;
+    protected boolean executando;
+    protected Socket socket;
+    protected Intelecto ia;
+    protected Thread thread;
+    protected BufferedReader in;
+    protected PrintStream out;
 
-	public static synchronized Atendente getInstance(Socket socket, Intelecto ia) {
+    public static synchronized Atendente getInstance(Socket socket) {
 
-		try {
+        try {
 
-			if (uniqueInstanceAtendente == null) {
-				uniqueInstanceAtendente = new Mobile(socket, ia);
-			} else {
-				uniqueInstanceAtendente = new Robo(socket, ia);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+            if (UNIQUE_INSTANCE == null) {
+                UNIQUE_INSTANCE = new Mobile(socket);
+            } else {
+                UNIQUE_INSTANCE = new Robo(socket);
+            }
 
-		return uniqueInstanceAtendente;
-	}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-	public static synchronized Atendente getInstance(Socket socket) {
+        return UNIQUE_INSTANCE;
+    }
 
-		try {
+    protected void open() throws Exception {
 
-			if (uniqueInstanceAtendente == null) {
-				uniqueInstanceAtendente = new Mobile(socket);
-			} else {
-				uniqueInstanceAtendente = new Robo(socket);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+        try {
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            out = new PrintStream(socket.getOutputStream());
+            inicializado = true;
+        } catch (Exception e) {
+            close();
+            throw e;
+        }
 
-		return uniqueInstanceAtendente;
-	}
+    }
 
-	protected void open() throws Exception {
+    protected void close() {
 
-		try {
-			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			out = new PrintStream(socket.getOutputStream());
-			inicializado = true;
-		} catch (Exception e) {
-			close();
-			throw e;
-		}
+        if (in != null) {
+            try {
+                in.close();
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        }
 
-	}
+        if (out != null) {
+            try {
+                out.close();
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        }
 
-	protected void close() {
+        try {
+            socket.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
 
-		if (in != null) {
-			try {
-				in.close();
-			} catch (Exception e) {
-				System.out.println(e);
-			}
-		}
+        in = null;
+        out = null;
+        socket = null;
 
-		if (out != null) {
-			try {
-				out.close();
-			} catch (Exception e) {
-				System.out.println(e);
-			}
-		}
+        inicializado = false;
+        executando = false;
 
-		try {
-			socket.close();
-		} catch (Exception e) {
-			System.out.println(e);
-		}
+        thread = null;
+    }
 
-		in = null;
-		out = null;
-		socket = null;
+    public void start() {
 
-		inicializado = false;
-		executando = false;
+        if (!inicializado || executando)
+            return;
 
-		thread = null;
-	}
+        executando = true;
+        thread = new Thread(this);
+        thread.start();
 
-	public void start() {
+    }
 
-		if (!inicializado || executando)
-			return;
+    public void stop() throws Exception {
 
-		executando = true;
-		thread = new Thread(this);
-		thread.start();
+        executando = false;
 
-	}
+        if (thread != null)
+            thread.join();
 
-	public void stop() throws Exception {
-
-		executando = false;
-
-		if (thread != null)
-			thread.join();
-
-	}
+    }
 
 }

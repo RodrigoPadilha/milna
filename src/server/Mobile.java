@@ -1,28 +1,22 @@
 package server;
 
-import java.net.Socket;
-import java.net.SocketTimeoutException;
-
 import com.google.gson.Gson;
-
 import ia.Intelecto;
 import ia.Mapa;
 
+import java.net.Socket;
+import java.net.SocketTimeoutException;
+
 public class Mobile extends Atendente {
 
-	public Mobile(Socket socket, Intelecto ia) throws Exception {
-
-		// TODO Auto-generated constructor stub
+	public Mobile(Socket socket) throws Exception {
 
 		super.socket = socket;
 		super.inicializado = false;
 		super.executando = false;
-		super.ia = ia;
+		super.ia = Intelecto.getInstance();
 
 		open();
-	}
-
-	public Mobile(Socket socket) throws Exception {
 
 	}
 
@@ -35,8 +29,6 @@ public class Mobile extends Atendente {
 				socket.setSoTimeout(2500);
 
 				String mensagem = in.readLine();
-
-				//System.out.println("Mensagem recebida do cliente " + socket.getInetAddress().getHostName() + ":" + socket.getPort() + " - " + mensagem);
 
 				if ("Fim".equals(mensagem)) {
 					System.out.println(socket.getInetAddress().getHostName() + ":" + socket.getPort() + " - " + mensagem);
@@ -64,8 +56,7 @@ public class Mobile extends Atendente {
 
 						System.out.println("Não abriu Gson");
 					}
-					mensagem = null;
-					//out.println("OK");
+
 				}
 
 			} catch (SocketTimeoutException e) {

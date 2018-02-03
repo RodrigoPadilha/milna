@@ -1,27 +1,23 @@
 package server;
 
-import java.net.Socket;
-import java.net.SocketTimeoutException;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-
 import ia.Estado;
 import ia.Intelecto;
 
+import java.net.Socket;
+import java.net.SocketTimeoutException;
+
 public class Robo extends Atendente {
 
-	public Robo(Socket socket, Intelecto ia) throws Exception {
+	public Robo(Socket socket) throws Exception {
 
 		super.socket = socket;
 		super.inicializado = false;
 		super.executando = false;
-		super.ia = ia;
+		super.ia = Intelecto.getInstance();
 
 		open();
-	}
-
-	public Robo(Socket socket) throws Exception {
 
 	}
 
@@ -34,8 +30,6 @@ public class Robo extends Atendente {
 				socket.setSoTimeout(2500);
 
 				String mensagem = in.readLine();
-
-				//System.out.println("Mensagem recebida do cliente " + socket.getInetAddress().getHostName() + ":" + socket.getPort() + " - " + mensagem);
 
 				if ("Fim".equals(mensagem)) {
 					System.out.println(socket.getInetAddress().getHostName() + ":" + socket.getPort() + " - " + mensagem);
@@ -57,8 +51,7 @@ public class Robo extends Atendente {
 						try {
 							mensagemRobo = gson.fromJson(mensagem, MensagemRobo.class);
 						} catch (JsonSyntaxException e) {
-							MetricasRobo metricasRobo = new MetricasRobo();
-							metricasRobo = gson.fromJson(mensagem, MetricasRobo.class);
+							MetricasRobo metricasRobo = gson.fromJson(mensagem, MetricasRobo.class);
 
 							if (metricasRobo.getNorte() == 1)
 								mensagemRobo.setNorte(true);
@@ -101,8 +94,7 @@ public class Robo extends Atendente {
 
 						System.out.println("Não abriu Gson");
 					}
-					mensagem = null;
-					//out.println("OK");
+
 				}
 
 			} catch (SocketTimeoutException e) {

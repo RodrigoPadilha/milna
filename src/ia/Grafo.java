@@ -76,7 +76,7 @@ public class Grafo {
 
 		for (Estado estado : listaDeNodos) {			
 			matrizAdjac.put(estado, new HashMap<>()); 		// Para cada item cria-se uma nova lista. 
-																			// Esta lista contém um relacionamento com os filhos/custo
+																			// Esta lista cont?m um relacionamento com os filhos/custo
 			if (estado.isNorte()) 
 				getDescendentes(estado, "Norte");			
 			if (estado.isSul()) 
@@ -139,7 +139,7 @@ public class Grafo {
 	
 						if (isBreakpoint(custoLinha, custoColuna)) {		//if (isBreakpoint(custoX,custoY )) {
 							boolean isPai = false; 	
-							if(!isPai){			// Significa que não foi adicionado a lista de pais
+							if(!isPai){			// Significa que n?o foi adicionado a lista de pais
 								matrizAdjac.get(estado).put(mapa.getMapa()[custoLinha][custoColuna], getCusto(custoIni, custoFin));	//matrizAdjac.get(estado).put(mapa.getMapa()[custoY][custoX], getCusto(custoIni, custoFin));																			
 								filhoEncontrado = true;
 							}				
@@ -181,9 +181,9 @@ public class Grafo {
 
 
 	/** 
-	 *Divergência entre estado e leitura significa uma Barreira,
-	 *seta o estado do próximo movimento como isCaminho = false
-	 *e seta a direção onde foi constatado a barreira como false  */ 
+	 *Diverg?ncia entre estado e leitura significa uma Barreira,
+	 *seta o estado do pr?ximo movimento como isCaminho = false
+	 *e seta a dire??o onde foi constatado a barreira como false  */ 
 	public void atualizaMapa(Estado estadoPresente,Estado estadoFuturo,Estado leitura){
 		
 		int linha = mapa.getPosMapa(estadoPresente)[0];	// pega pos do mapa no eixo X do estadoValido
@@ -225,7 +225,7 @@ public class Grafo {
 			mapa.getPosMapa(x, y).setOeste(false);  
 			mapa.getPosMapa(x, y).setLeste(false);  
 		}catch(ArrayIndexOutOfBoundsException exception){
-			System.out.println("O índice " + exception.getMessage() + " não existe para ao alterar direcoes do Mapa " + mapa.getPosMapa(x, y).getNome());			
+			System.out.println("O ?ndice " + exception.getMessage() + " n?o existe para ao alterar direcoes do Mapa " + mapa.getPosMapa(x, y).getNome());			
 		}		
 	}
 	
@@ -237,7 +237,7 @@ public class Grafo {
 			mapa.getPosMapa(x, y - 1).setLeste(false);
 			mapa.getPosMapa(x, y + 1).setOeste(false);
 		}catch(ArrayIndexOutOfBoundsException exception){
-			System.out.println("O índice " + exception.getMessage() + " não existe para ao alterar direcoes dos Vizinhos " + mapa.getPosMapa(x, y).getNome());			
+			System.out.println("O ?ndice " + exception.getMessage() + " n?o existe para ao alterar direcoes dos Vizinhos " + mapa.getPosMapa(x, y).getNome());			
 		}	
 	}
 	

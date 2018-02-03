@@ -15,11 +15,10 @@ public class Servidor implements Runnable {
 	private boolean executando;
 	private Thread thread;
 	public static ArrayList<Atendente> atendentes;
-	private Intelecto ia;
 
 	public Servidor(int porta) throws Exception {
 
-		atendentes = new ArrayList<Atendente>();
+		atendentes = new ArrayList<>();
 
 		inicializado = false;
 		executando = false;
@@ -65,7 +64,6 @@ public class Servidor implements Runnable {
 		if (!inicializado || executando)
 			return;
 
-		ia = new Intelecto();
 		executando = true;
 		thread = new Thread(this);
 		thread.start();
@@ -77,28 +75,28 @@ public class Servidor implements Runnable {
 		executando = false;
 
 		if (thread != null)
-			thread.join(); // Bloqueia a thread atual até que a thread auxiliar seja finalizada. Até que o método run() retorne
+			thread.join(); // Bloqueia a thread atual at? que a thread auxiliar seja finalizada. At? que o método run() retorne
 
 	}
 
 	@Override
 	public void run() {
 
-		System.out.println("Aguardando conexão");
+		System.out.println("Aguardando conex?o");
 
 		while (executando) {
 			try {
 				server.setSoTimeout(2500);
 				Socket socket = server.accept();
 
-				System.out.println("Conexão estabelecida");
+				System.out.println("Conex?o estabelecida");
 
 				/**
 				 * Obriga a conectar primeiramente o Celular e
 				 * em seguida conectar o Robo
 				 */
-				//Atendente dispositivoGeneric = Atendente.getInstance(socket);
-				Atendente dispositivoGeneric = Atendente.getInstance(socket, ia);
+				Atendente dispositivoGeneric = Atendente.getInstance(socket);
+				//Atendente dispositivoGeneric = Atendente.getInstance(socket, ia);
 				dispositivoGeneric.start();
 				atendentes.add(dispositivoGeneric);
 
