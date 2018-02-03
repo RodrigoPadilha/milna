@@ -16,9 +16,9 @@ public class Roterizador {
 		listaDeRotas = new ArrayList<>();
 	}
 
-	public void buscaRotas(Estado estadoIni) { 	// Buscar rotas para todos os estados possíveis gerados pelo Localizador
+	public void buscaRotas(Estado estadoIni) { 	// Buscar rotas para todos os estados possï¿½veis gerados pelo Localizador
 		
-		grafo.getMapa().setEstadoIni(estadoIni); 	// seta estado possível em estado Objetivo para buscar sua rota até o estadoObjetivo
+		grafo.getMapa().setEstadoIni(estadoIni); 	// seta estado possï¿½vel em estado Objetivo para buscar sua rota atï¿½ o estadoObjetivo
 		grafo.estruturaDados(); 						//Refazer matrizAdjac Para considerar novo estadoIni como breakpoint
 
 		busca = new MelhorEscolha(grafo);
@@ -36,16 +36,16 @@ public class Roterizador {
 		List<Integer> pos2 = new ArrayList<>();
 		int distancia, cont;
 
-		for (Rota rota : listaDeRotas) { 							// Passa por todas as rotas adicionadas a lista através de cada estado possível de > probabilidade 
+		for (Rota rota : listaDeRotas) { 							// Passa por todas as rotas adicionadas a lista atravï¿½s de cada estado possï¿½vel de > probabilidade 
 			distancia = 0;
 			cont = rota.getCaminhoSolucao().size() - 1;
-			Estado estado = rota.getCaminhoSolucao().get(cont); // pega um estado da lista de "caminho solução" até passar por todos da lista
+			Estado estado = rota.getCaminhoSolucao().get(cont); // pega um estado da lista de "caminho soluï¿½ï¿½o" atï¿½ passar por todos da lista
 //			System.out.print("\nEstado " + estado.getNome());
 
-			while (!estado.getNome().equals(grafo.getMapa().getEstadoObjetivo().getNome())) { // Enquando não chegar ao estado raíz da rota continua fazeno o procedimento	
+			while (!estado.getNome().equals(grafo.getMapa().getEstadoObjetivo().getNome())) { // Enquando nï¿½o chegar ao estado raï¿½z da rota continua fazeno o procedimento	
 //				System.out.println("");
 //				System.out.print("Custo entre " + estado.getNome() + "-");
-				for (int i = 0; i < grafo.getMapa().getQtdLinhasMapa(); i++) { // procura a posição do estado que está na lista "caminho solução"
+				for (int i = 0; i < grafo.getMapa().getQtdLinhasMapa(); i++) { // procura a posiï¿½ï¿½o do estado que estï¿½ na lista "caminho soluï¿½ï¿½o"
 					for (int j = 0; j < grafo.getMapa().getQtdColunasMapa(); j++) {
 						if (grafo.getMapa().getPosMapa(i, j).getNome().equals(estado.getNome())) {
 							pos1.add(i);
@@ -55,7 +55,7 @@ public class Roterizador {
 					}
 				}
 
-				estado = rota.getCaminhoSolucao().get(cont); // procura o próximo estado para calcular a distância entre eles
+				estado = rota.getCaminhoSolucao().get(cont); // procura o prï¿½ximo estado para calcular a distï¿½ncia entre eles
 //				System.out.print(estado.getNome() + " = ");
 				for (int i = 0; i < grafo.getMapa().getQtdLinhasMapa(); i++) {
 					for (int j = 0; j < grafo.getMapa().getQtdColunasMapa(); j++) {
@@ -65,11 +65,11 @@ public class Roterizador {
 						}
 					}
 				}
-				// calcula distância entre os estados
-				if (pos1.get(0) == pos2.get(0)) { //se estão na mesma linha a diferença será entre j
+				// calcula distï¿½ncia entre os estados
+				if (pos1.get(0) == pos2.get(0)) { //se estï¿½o na mesma linha a diferenï¿½a serï¿½ entre j
 //					System.out.print(grafo.getCusto(pos1.get(1), pos2.get(1)));
 					distancia += grafo.getCusto(pos1.get(1), pos2.get(1)); // j-j										
-				} else { //se estão na mesma coluna a diferença será entre i
+				} else { //se estï¿½o na mesma coluna a diferenï¿½a serï¿½ entre i
 //					System.out.print(grafo.getCusto(pos1.get(0), pos2.get(0)));
 					distancia += grafo.getCusto(pos1.get(0), pos2.get(0)); // i-i																		
 				}
@@ -96,7 +96,7 @@ public class Roterizador {
 
 	}
 
-	// Método recebe as posições de onde deve começar a busca pelos estados
+	// MÃ©todo recebe as posiï¿½ï¿½es de onde deve comeï¿½ar a busca pelos estados
 	private void addMigalhas(int linhaIni, int linhaFin, int colunaIni, int colunaFin, Rota rota, int indice) {
 
 		boolean corrigeIndice = false; // Se precisar inverter usar incremento no contIndex
@@ -114,11 +114,11 @@ public class Roterizador {
 			corrigeIndice = true;
 		}
 
-		int contIndice = indice; // Recebe o indice do ultimo estado da lista, então subtrai 1 para fica na posição certa para add
+		int contIndice = indice; // Recebe o indice do ultimo estado da lista, entï¿½o subtrai 1 para fica na posiï¿½ï¿½o certa para add
 		for (int i = linhaIni; i <= linhaFin; i++) {
 			for (int j = colunaIni; j <= colunaFin; j++) {
 				if (!grafo.getMapa().getPosMapa(i, j).getNome().equals(grafo.getMapa().getPosMapa(linhaIni, colunaIni).getNome())
-						&& !grafo.getMapa().getPosMapa(i, j).getNome().equals(grafo.getMapa().getPosMapa(linhaFin, colunaFin).getNome())) { // Verifica se o estado não é um breakpoint que ja está na lista												
+						&& !grafo.getMapa().getPosMapa(i, j).getNome().equals(grafo.getMapa().getPosMapa(linhaFin, colunaFin).getNome())) { // Verifica se o estado nï¿½o ï¿½ um breakpoint que ja estï¿½ na lista												
 //					System.out.print(" Add estado: " + grafo.getMapa().getPosMapa(i, j).getNome());
 					rota.getCaminhoSolucao().add(contIndice, grafo.getMapa().getPosMapa(i, j));
 					if (corrigeIndice)
